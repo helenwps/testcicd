@@ -10,11 +10,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
-  base: '/testcicd/',
-  build: {
-    outDir: 'dist',        // 默认就是 dist，可省略
-    emptyOutDir: true,     // 构建前清空输出目录
-  },
+  base: './',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
