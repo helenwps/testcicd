@@ -10,7 +10,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
-  base: '/testcicd/',
+  base: './',
   build: {
     outDir: 'dist',        // 默认就是 dist，可省略
     emptyOutDir: true,     // 构建前清空输出目录
