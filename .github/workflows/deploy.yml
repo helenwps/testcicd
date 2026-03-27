@@ -1,7 +1,7 @@
 name: Build and Deploy
 on: [push]
 permissions:
-  contents: write   # 仅当使用 GITHUB_TOKEN 时需要
+  contents: write
 
 jobs:
   deploy:
@@ -10,14 +10,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20   # 升级到 LTS 版本
-          cache: 'pnpm'      # 使用内置 pnpm 缓存
+          node-version: 18
+          cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v2
         with:
           version: 8
 
@@ -30,7 +28,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}   # 或使用 ACCESS_TOKEN 若需要
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
