@@ -34,12 +34,20 @@ jobs:
 
       - name: Build project
         run: pnpm build
+      - name: Verify dist content
+        run: |
+          echo "=== dist directory ==="
+          ls -la dist
+          echo "=== dist/index.html content (first 20 lines) ==="
+          head -n 20 dist/index.html
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}   # 或使用 ACCESS_TOKEN 若需要
           publish_dir: ./dist
+          keep_files: false   # 确保清空旧文件
+          force_orphan: true  # 可选，强制创建新分支
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           allow_empty_commit: false
