@@ -1,11 +1,7 @@
-name: Github Pages
-
-on:
-  # set triggers here, like on push or on release
-  workflow_dispatch:
-  push:
-    branches: [ main ]
-  pull_request:
+name: Build and Deploy
+on: [push]
+permissions:
+  contents: write
 
 jobs:
   deploy:
@@ -24,7 +20,7 @@ jobs:
 
       - name: Build
         run: pnpm build
-        
+
       - name: Build
         run: pnpm build
 
