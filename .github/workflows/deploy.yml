@@ -1,36 +1,36 @@
 name: Build and Deploy
 on: [push]
 permissions:
-  contents: write
+  contents: write   # 仅当使用 GITHUB_TOKEN 时需要
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 14.19.x
+          node-version: 20   # 升级到 LTS 版本
+          cache: 'pnpm'      # 使用内置 pnpm 缓存
 
       - name: Install pnpm
-        run: npm i -g pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Install dependencies
-        run: pnpm install
-
-      - name: Build
-        run: pnpm build
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}   # 或使用 ACCESS_TOKEN 若需要
           publish_dir: ./dist
-          # Leave user_name and user_email unset to commit under your own username
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          # Optional. I'm using this for testing.
           allow_empty_commit: false
