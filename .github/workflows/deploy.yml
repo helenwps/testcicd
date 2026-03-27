@@ -1,27 +1,25 @@
 name: Build and Deploy
 on: [push]
 permissions:
-  contents: write   # 仅当使用 GITHUB_TOKEN 时需要
+  contents: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20   # 升级到 LTS 版本
-          cache: 'pnpm'      # 使用内置 pnpm 缓存
+          node-version: 18  # 建议升级到 LTS 版本
+          cache: 'pnpm'     # 启用 pnpm 缓存（需要配合 pnpm/action-setup）
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 8        # 指定 pnpm 版本，可选
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
@@ -29,7 +27,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}   # 或使用 ACCESS_TOKEN 若需要
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # 或使用你的 ACCESS_TOKEN
           publish_dir: ./dist
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
