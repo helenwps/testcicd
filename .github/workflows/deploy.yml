@@ -14,12 +14,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20   # 升级到 LTS 版本
-          cache: 'pnpm'      # 使用内置 pnpm 缓存
+          #cache: 'pnpm'      # 使用内置 pnpm 缓存
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
+          
+      - name: Add pnpm to PATH (fallback)
+        run: echo "$HOME/.local/share/pnpm" >> $GITHUB_PATH
+  
+      - name: Verify pnpm installation
+        run: |
+            pnpm --version
+            which pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
