@@ -6,11 +6,15 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/testcicd/',
   plugins: [
     vue(),
     vueDevTools(),
   ],
+  base: '/testcicd/',
+  build: {
+    outDir: 'dist',        // 默认就是 dist，可省略
+    emptyOutDir: true,     // 构建前清空输出目录
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
